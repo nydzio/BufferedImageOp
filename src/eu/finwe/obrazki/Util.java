@@ -381,6 +381,10 @@ public class Util {
         SKALUJ, ODBIJ_POZIOMO, ODBIJ_PIONOWO, OPISZ, MNOZ;
     }
     
+    public static enum typNicNierobienia {
+        NIEROBNIC, NIEROBABSOLUTNIENIC, ZROBCOS;
+    }
+    
 
     /*
      * prywatna tablica mieszająca ułatwia przechowywanie niektórych, 
@@ -672,6 +676,37 @@ public class Util {
     
         
         
+    }
+    
+    private static class FiltrNicNieRobiacy extends Filtr {
+        
+        private final typNicNierobienia dlaChecy;
+        
+        public FiltrNicNieRobiacy(typNicNierobienia dlaChecy) {
+            this.dlaChecy = dlaChecy;
+        }
+
+        @Override
+        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public Rectangle2D getBounds2D(BufferedImage src) {
+            return src.getRaster().getBounds();
+        }
+
+        @Override
+        public Point2D getPoint2D(Point2D srcPt, Point2D dstPt) {
+            
+            switch (dlaChecy) {
+                case NIEROBABSOLUTNIENIC:
+                case ZROBCOS: 
+                    return Filtr.getPoint2D_same(srcPt, dstPt);
+                default: return null;
+            }
+            
+        }
     }
     
     
